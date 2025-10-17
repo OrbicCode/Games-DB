@@ -16,3 +16,13 @@ export async function seedDatabase(): Promise<void> {
     throw error;
   }
 }
+
+export async function getAllGames(): Promise<Game[]> {
+  try {
+    const result = await pool.query('SELECT * FROM games_list');
+    return result.rows;
+  } catch (error) {
+    console.error('Failed to getAllGames: ', error);
+    throw error;
+  }
+}

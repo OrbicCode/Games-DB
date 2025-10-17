@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import { createTable } from './models/models';
 import { seedDatabase } from './services/services';
+import { gamesRouter } from './routes/routes';
 
 dotenv.config();
 
@@ -22,6 +23,6 @@ async function initDB(): Promise<void> {
 
 initDB();
 
-app.use('/games');
+app.use('/games', gamesRouter);
 
 app.listen(PORT, (): void => console.log(`Listening on port: ${PORT}`));
