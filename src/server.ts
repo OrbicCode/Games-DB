@@ -8,6 +8,7 @@ dotenv.config();
 
 const app: Express = express();
 const PORT: string | undefined = process.env.EXPRESS_PORT;
+const SEED_DATABASE = false;
 
 app.use(express.json());
 
@@ -15,8 +16,10 @@ async function initDB(): Promise<void> {
   try {
     await createTable();
     console.log('games_list table created');
-    await seedDatabase();
-    console.log('Database seed complete.');
+    if (SEED_DATABASE) {
+      await seedDatabase();
+      console.log('Database seed complete.');
+    }
   } catch (error) {
     console.error('Error initialising the database: ', error);
   }

@@ -9,7 +9,8 @@ export async function createTable(): Promise<void> {
                     description TEXT NOT NULL,
                     genre VARCHAR(100) NOT NULL,
                     release_date VARCHAR(100) NOT NULL,
-                    developer VARCHAR(100) NOT NULL
+                    developer VARCHAR(100) NOT NULL,
+                    UNIQUE(title)
                 );
             `);
     console.log('Database initialised or already exists');
