@@ -7,7 +7,7 @@ import { gamesRouter } from './routes/routes';
 dotenv.config();
 
 const app: Express = express();
-const PORT: string | undefined = process.env.DB_PORT;
+const PORT: string | undefined = process.env.EXPRESS_PORT;
 
 app.use(express.json());
 

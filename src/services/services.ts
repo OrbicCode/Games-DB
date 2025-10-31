@@ -17,12 +17,34 @@ export async function seedDatabase(): Promise<void> {
   }
 }
 
-export async function getAllGames(): Promise<Game[]> {
+export async function getAllGames(): Promise<Game[] | undefined> {
   try {
     const result = await pool.query('SELECT * FROM games_list');
     return result.rows;
   } catch (error) {
     console.error('Failed to getAllGames: ', error);
     throw error;
+  }
+}
+
+export async function getGameById(id: string): Promise<Game | undefined> {
+  try {
+    const result = await pool.query('SELECT * FROM games_list WHERE id = $1', [id]);
+    return result.rows[0];
+  } catch (error) {
+    console.error('Failed to getGameById');
+  }
+}
+
+export async function createGame(body: Game): Promise<Game | undefined> {
+  try {
+    const { title, short_description, genre, release_date, developer } = body;
+    const result = await pool.query(
+      'INSERT INTO games_list (title, description, genre, release_date, developer) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [title, short_description, genre, release_date, developer]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error('Failed to createGame', error);
   }
 }
