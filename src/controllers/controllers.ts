@@ -27,3 +27,12 @@ export async function createGame(req: Request, res: Response) {
     res.status(500).json({ error: 'Failed to create game' });
   }
 }
+
+export async function updateGame(req: Request, res: Response) {
+  try {
+    const game = await gamesService.updateGame(req.body, req.params.id);
+    res.json(game);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update game' });
+  }
+}

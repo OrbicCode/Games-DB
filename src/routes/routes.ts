@@ -8,3 +8,5 @@ gamesRouter.get('/', gamesControllers.getAllGames);
 gamesRouter.get('/:id', gamesControllers.getGameById);
 
 gamesRouter.post('/', gamesControllers.createGame);
+
+gamesRouter.patch('/:id', gamesControllers.updateGame);

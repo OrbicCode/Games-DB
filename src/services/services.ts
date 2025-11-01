@@ -65,3 +65,9 @@ export async function createGame(body: Game): Promise<Game | undefined> {
     throw error;
   }
 }
+
+export async function updateGame(body: Game, id: string) {
+  try {
+    const { title, short_description, genre, release_date, developer } = body;
+  } catch (error) {}
+}
