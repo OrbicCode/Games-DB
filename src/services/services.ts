@@ -43,16 +43,32 @@ export async function getGameById(id: string): Promise<Game | undefined> {
   }
 }
 
-export async function createGame(body: Game): Promise<Game | undefined> {
+export async function createGame(body: Partial<Game>): Promise<Game> {
   try {
-    const { title, short_description, genre, release_date, developer } = body;
+    const fieldMap: { [key in keyof Partial<Game>]: string } = {
+      title: 'title',
+      short_description: 'description',
+      genre: 'genre',
+      release_date: 'release_date',
+      developer: 'developer',
+    };
+
+    const fields = Object.keys(body)
+      .filter((key) => key in fieldMap && body[key as keyof Game] !== undefined)
+      .map((key) => fieldMap[key as keyof Game]);
+    const values = Object.keys(body)
+      .filter((key) => key in fieldMap && body[key as keyof Game] !== undefined)
+      .map((key) => body[key as keyof Game]);
+
+    const parameters = fields.map((_, index) => `$${index + 1}`).join(', ');
+
     const result = await pool.query(
       `INSERT INTO games_list
-      (title, description, genre, release_date, developer)
-      VALUES ($1, $2, $3, $4, $5) 
+      (${fields.join(', ')})
+      VALUES (${parameters}) 
       ON CONFLICT (title) DO NOTHING
       RETURNING *`,
-      [title, short_description, genre, release_date, developer]
+      [values]
     );
 
     if (result.rowCount === 0) {
