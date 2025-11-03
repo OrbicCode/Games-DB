@@ -129,3 +129,22 @@ export async function updateGame(body: Partial<Game>, id: string): Promise<Game>
     throw error;
   }
 }
+
+export async function deleteGame(id: string) {
+  try {
+    const result = await pool.query(
+      `DELETE FROM games_list
+        WHERE id = $1
+        RETURNING *`,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      throw new Error("Couldn't find game");
+    }
+
+    return result.rows[0];
+  } catch (error) {
+    throw error;
+  }
+}
