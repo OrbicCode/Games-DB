@@ -8,7 +8,7 @@ dotenv.config();
 
 const app: Express = express();
 const PORT: string | undefined = process.env.EXPRESS_PORT;
-const SEED_DATABASE = true;
+const SEED_DATABASE = false;
 
 app.use(express.json());
 

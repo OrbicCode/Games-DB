@@ -68,7 +68,7 @@ export async function createGame(body: Partial<Game>): Promise<Game> {
       VALUES (${parameters}) 
       ON CONFLICT (title) DO NOTHING
       RETURNING *`,
-      [values]
+      values
     );
 
     if (result.rowCount === 0) {
@@ -77,13 +77,11 @@ export async function createGame(body: Partial<Game>): Promise<Game> {
 
     return result.rows[0];
   } catch (error) {
-    console.error('Failed to createGame', error);
     throw error;
   }
 }
 
 export async function updateGame(body: Game, id: string) {
   try {
-    const { title, short_description, genre, release_date, developer } = body;
   } catch (error) {}
 }

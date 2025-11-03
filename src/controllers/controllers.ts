@@ -21,9 +21,13 @@ export async function getGameById(req: Request, res: Response) {
 
 export async function createGame(req: Request, res: Response) {
   try {
+    if (!req.body.title) {
+      res.status(404).json({ error: 'title required' });
+    }
     const game = await gamesService.createGame(req.body);
     res.json(game);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Failed to create game' });
   }
 }

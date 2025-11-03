@@ -12,10 +12,10 @@ export async function createTable(): Promise<void> {
                      developer VARCHAR(100) NOT NULL
                  );
              `);
-    await pool.query(`
-                  ALTER TABLE games_list
-                  ADD CONSTRAINT unique_title
-                  UNIQUE (title)`);
+    // await pool.query(`
+    //               ALTER TABLE games_list
+    //               ADD CONSTRAINT unique_title
+    //               UNIQUE (title)`);
     console.log('Database initialised or already exists');
   } catch (error) {
     console.error('Error creating games_list table:', error);
