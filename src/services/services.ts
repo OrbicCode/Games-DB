@@ -22,7 +22,10 @@ export async function seedDatabase(): Promise<void> {
 
 export async function getAllGames(): Promise<Game[] | undefined> {
   try {
-    const result = await pool.query(`SELECT * FROM games_list`);
+    const result = await pool.query(`
+      SELECT * FROM games_list
+      ORDER BY id
+      `);
     return result.rows;
   } catch (error) {
     console.error('Failed to getAllGames: ', error);
@@ -81,7 +84,48 @@ export async function createGame(body: Partial<Game>): Promise<Game> {
   }
 }
 
-export async function updateGame(body: Game, id: string) {
+export async function updateGame(body: Partial<Game>, id: string): Promise<Game> {
   try {
-  } catch (error) {}
+    const updates: string[] = [];
+    let values: any[] = [];
+    let paramIndex: number = 1;
+
+    if (body.title) {
+      updates.push(`title = $${paramIndex++}`);
+      values.push(body.title);
+    }
+    if (body.short_description) {
+      updates.push(`description = $${paramIndex++}`);
+      values.push(body.short_description);
+    }
+    if (body.genre) {
+      updates.push(`genre = $${paramIndex++}`);
+      values.push(body.genre);
+    }
+    if (body.release_date) {
+      updates.push(`release_date = $${paramIndex++}`);
+      values.push(body.release_date);
+    }
+    if (body.developer) {
+      updates.push(`developer = $${paramIndex++}`);
+      values.push(body.developer);
+    }
+
+    if (updates.length === 0) {
+      throw new Error('no updates provided');
+    }
+
+    values.push(id);
+
+    const result = await pool.query(
+      `UPDATE games_list
+      SET ${updates.join(', ')}
+      WHERE id = $${paramIndex} 
+      RETURNING *`,
+      values
+    );
+    return result.rows[0];
+  } catch (error) {
+    throw error;
+  }
 }
