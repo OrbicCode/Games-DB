@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { createTable } from './models/models';
 import { seedDatabase } from './services/services';
@@ -28,5 +28,9 @@ async function initDB(): Promise<void> {
 initDB();
 
 app.use('/games', gamesRouter);
+
+app.use((req: Request, res: Response) => {
+  res.status(404).json({ message: 'endpoint not found' });
+});
 
 app.listen(PORT, (): void => console.log(`Listening on port: ${PORT}`));
