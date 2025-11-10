@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as gamesService from '../services/services';
+import { Game } from '../utils/fetchGames';
 
 export async function getAllGames(req: Request, res: Response) {
   try {
@@ -10,7 +11,7 @@ export async function getAllGames(req: Request, res: Response) {
   }
 }
 
-export async function getGameById(req: Request, res: Response) {
+export async function getGameById(req: Request, res: Response<Game | { error: string }>) {
   try {
     if (!req.params.id) {
       return res
