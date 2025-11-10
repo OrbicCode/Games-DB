@@ -11,7 +11,10 @@ export async function getAllGames(req: Request, res: Response) {
   }
 }
 
-export async function getGameById(req: Request, res: Response<Game | { error: string }>) {
+export async function getGameById(
+  req: Request<{ id: string }>,
+  res: Response<Game | { error: string }>
+) {
   try {
     if (!req.params.id) {
       return res
