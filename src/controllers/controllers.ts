@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import * as gamesService from '../services/services';
 import { Game } from '../utils/fetchGames';
 
-export async function getAllGames(req: Request, res: Response) {
+export async function getAllGames(req: Request, res: Response<Game[] | { error: string }>) {
   try {
     const games = await gamesService.getAllGames();
     res.json(games);
@@ -32,7 +32,10 @@ export async function getGameById(
   }
 }
 
-export async function createGame(req: Request, res: Response) {
+export async function createGame(
+  req: Request<any, {}, { title: string }>,
+  res: Response<Game | { error: string }>
+) {
   try {
     if (!req.body.title) {
       return res.status(400).json({ error: 'title required' });
@@ -45,7 +48,10 @@ export async function createGame(req: Request, res: Response) {
   }
 }
 
-export async function updateGame(req: Request, res: Response) {
+export async function updateGame(
+  req: Request<{ id: string }>,
+  res: Response<Game | { error: string }>
+) {
   try {
     if (!req.params.id) {
       return res
@@ -70,7 +76,10 @@ export async function updateGame(req: Request, res: Response) {
   }
 }
 
-export async function deleteGame(req: Request, res: Response) {
+export async function deleteGame(
+  req: Request<{ id: string }>,
+  res: Response<Game | { error: string }>
+) {
   try {
     if (!req.params.id) {
       return res
